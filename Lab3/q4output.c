@@ -1,0 +1,9 @@
+dhkfgh
+fhsjkghd
+hello()
+READ("%d")
+WRITE("Hello")
+dklhg
+WRITE()
+READ()
+sgjkldfhj

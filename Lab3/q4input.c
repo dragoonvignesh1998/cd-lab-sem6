@@ -1,0 +1,9 @@
+dhkfgh
+fhsjkghd
+hello()
+scanf("%d")
+printf("Hello")
+dklhg
+printf()
+scanf()
+sgjkldfhj

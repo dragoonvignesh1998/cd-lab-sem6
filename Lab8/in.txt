@@ -1,0 +1,6 @@
+main(){ int ab[90]; 
+char c; 
+while(i == 9){
+	i = i+1;
+}
+}

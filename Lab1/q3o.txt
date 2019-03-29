@@ -1,0 +1,4 @@
+INT 3 1 
+INT 9 5 
+CHAR 10 5 
+RETURN 12 5 

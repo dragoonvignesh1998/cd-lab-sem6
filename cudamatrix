@@ -1,0 +1,63 @@
+#include "cuda_runtime.h"
+#include "device_launch_parameters.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+__global__ void add1(int a[100],b[100],c[100],int w)
+{
+	int id=threadIdx.x;
+	for(int i=0;i<w;i++)
+	{
+		c[id*w+j]=a[id*w+j]+b[id*w+j];
+	}
+}
+
+__global__ void add3(int a[100],int b[100],int e[100])
+{
+	int i=blockIdx.x*blockDim.x+threadIdx.x;
+	e[i]=a[i]+b[i];
+}
+int main()
+{
+	int a[100],b[100],c[100],n,d[100],e[100],row,col;
+	int *d_a,*d_b,*d_c,*d_d,*d_e;
+	printf("Enter the dimensions of the matrix:\n");
+	scanf("%d %d",&row,&col);
+	int size=sizeof(int)*row*col;
+	cudaMalloc((void **)&d_a,size);
+	cudaMalloc((void **)&d_b,size);
+	cudaMalloc((void **)&d_c,size);
+	cudaMalloc((void **)&d_d,size);
+	printf("Enter a:\n");
+	for(int i=0;i<row*col;i++)
+		scanf("%d",&a[i]);
+	printf("Enter b:\n");
+	for(int i=0;i<row*col;i++)
+		scanf("%d",&b[i]);
+	cudaMemcpy(d_a,&a,size,cudaMemcpyHostToDevice);
+	cudaMemcpy(d_b,&b,size,cudaMemcpyHostToDevice);
+	add1<<<1,row>>>(d_a,d_b,d_c);
+	cudaMemcpy(&c,d_c,size,cudaMemcpyDeviceToHost);
+	add2<<<1,row>>>(d_a,d_b,d_d);
+	cudaMemcpy(&c,d_d,size,cudaMemcpyDeviceToHost);
+	add3<<<row,col>>>(d_a,d_b,d_e);
+	cudaMemcpy(&c,d_e,size,cudaMemcpyDeviceToHost);
+	printf("\nPrinted with one thread for each element:\n");
+	for(int i=0;i<row*col;i++)
+	{
+		printf("%d  ",e[i]);
+		if((i+1)%col==0)
+			printf("\n");
+	}
+	/**printf("\nPrinted using 1 block of N threads:\n");
+	for(int i=0;i<n;i++)
+		printf("%d  ",d[i]);**/
+	cudaFree(d_a);
+	cudaFree(d_b);
+	cudaFree(d_c);
+	cudaFree(d_d);
+	cudaFree(d_e);
+}
+
